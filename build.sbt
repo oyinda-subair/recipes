@@ -8,6 +8,8 @@ val jodaConvertVersion = "2.2.1"
 val slickJodaMapperVersion = "2.4.2"
 val scalaTestVersion = "3.1.2"
 val flywayVersion = "6.4.3"
+val slf4jVersion = "1.7.30"
+val qosVersion = "1.2.3"
 
 
 
@@ -23,6 +25,10 @@ val tototoshi  = "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapper
 val scalaTest = "org.scalatest" % "scalatest_2.13" % scalaTestVersion % "test"
 val flywayCore = "org.flywaydb" % "flyway-core" % flywayVersion
 val slickMigrationAPI = "com.1on1development" %% "slick-migration-api-flyway" % "0.4.1"
+
+val slf4j      = "org.slf4j" % "slf4j-api" % slf4jVersion
+val qos            = "ch.qos.logback" % "logback-classic" % qosVersion
+val qosCore       = "ch.qos.logback" % "logback-core" % qosVersion
 
 
 
@@ -52,6 +58,9 @@ lazy val root = (project in file("."))
       jodaConvert,
       tototoshi,
       mysqlJava,
+      slf4j,
+      qos,
+      qosCore,
       scalaTest,
       flywayCore
     )
