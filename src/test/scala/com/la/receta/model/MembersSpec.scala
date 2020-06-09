@@ -12,12 +12,15 @@ class MembersSpec extends AnyWordSpec with Matchers with ScalaFutures with Integ
   "Members" should {
     "create member with valid request" in {
 
-      val request = CreateMemberRequest("oyin", "oyin@example.com", "password")
+      val request = CreateMemberRequest(s"$string10", s"$string10@example.com", "password")
 
       val result = memberDb.insert(request).futureValue
       val member = memberDb.findById(result).futureValue
 
       member.isDefined shouldBe true
+      member.get.userId shouldEqual result
+      member.get.username shouldEqual request.username
+      member.get.email shouldEqual request.email
     }
   }
 }

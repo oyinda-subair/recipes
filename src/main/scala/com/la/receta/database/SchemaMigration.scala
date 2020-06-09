@@ -25,7 +25,6 @@ class SchemaMigration(implicit val db: JdbcProfile#Backend#Database) extends App
 //    flyway.schemas(schema)
 
     try {
-
       flyway.load().migrate()
     } catch {
       case NonFatal(ex) =>
