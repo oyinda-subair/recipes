@@ -9,6 +9,21 @@ on:
       - master
       - develop
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MYSQL_URL: ${{ secrets.DATABASE_URL }}
+      MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - name: Setup Databasee
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql database: "recipes
+          mysql root password: $MYSQL_PASSWORD
+          mysql user: $MYSQL_USERNAME
+          mysql password: $MYSQL_PASSWORD
   test:
     runs-on: ubuntu-latest
     env:
@@ -18,8 +33,6 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - name: Build docker-compose
-        run: docker-compose up -d
       - name: Run tests
         run: sbt coverage test
       - name: Coverage Report
