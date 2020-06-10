@@ -17,6 +17,4 @@ trait ApplicationConfiguration {
   val dbPassword: String = sys.env.getOrElse("MYSQL_PASSWORD", "")
 
   val log: Logger = LoggerFactory.getLogger(className)
-
-  log.debug(s"Connecting to database: $dbUrl")
 }

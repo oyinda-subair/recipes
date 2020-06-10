@@ -14,8 +14,13 @@ env:
   MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    env:
+      MYSQL_URL: ${{ secrets.DATABASE_URL }}
+      MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - name: Shutdown Ubuntu MySQL (SUDO)
         run: sudo service mysql stop
@@ -31,15 +36,6 @@ jobs:
           mysql root password: ${{ secrets.DATABASE_PASSWORD }}
           mysql user: ${{ secrets.DATABASE_USERNAME }}
           mysql password: ${{ secrets.DATABASE_PASSWORD }}
-  test:
-    runs-on: ubuntu-latest
-    env:
-      MYSQL_URL: ${{ secrets.DATABASE_URL }}
-      MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-    steps:
-      - uses: actions/checkout@v2
       - name: Run tests
         run: sbt coverage test
       - name: Coverage Report
