@@ -30,7 +30,7 @@ val slf4j      = "org.slf4j" % "slf4j-api" % slf4jVersion
 val qos            = "ch.qos.logback" % "logback-classic" % qosVersion
 val qosCore       = "ch.qos.logback" % "logback-core" % qosVersion
 
-
+val scalaFmt = "org.scalameta" %% "scalafmt-cli" % "2.5.3"
 
 lazy val commonSettings = Seq(
   version := "1.0",

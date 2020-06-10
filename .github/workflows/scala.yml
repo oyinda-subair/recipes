@@ -12,9 +12,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      MYSQL_URL: ${{secrets.MYSQL_URL}}
-      MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME}}
-      MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
+      MYSQL_URL: ${{secrets.DATABASE_URL}}
+      MYSQL_USERNAME: ${{secrets.DATABASE_USERNAME}}
+      MYSQL_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
     steps:
       - uses: actions/checkout@v2
       - name: Build docker-compose
