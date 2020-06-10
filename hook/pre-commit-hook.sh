@@ -29,32 +29,29 @@ echo "* Compiles?"
 if [ $compiles -eq 0 ]
 then
 	echo "* Yes!"
+	echo ""
+	echo "* Formatting staged changes..."
+  sbt test:scalastyle > /dev/null
+  git diff --quiet
+  formatted=$?
+
+  echo "* Properly Formatted?..."
+  if [ $formatted -eq 0 ]
+  then
+    echo "* Yes!"
+  else
+    echo "* No!"
+    echo "The following files need formatting (in stage or commited):"
+    git diff --name-only
+    echo ""
+    echo "Please run 'sbt scalastyle' to format the code"
+    echo ""
+  fi
 else
-	echo "* No!"
+	echo "* No! Error Compiling"
 fi
 
-echo "* Formatting staged changes..."
-cd $DIR/; sbt scalafmt
-git diff --quiet
-formatted=$?
-
-echo "* Properly Formatted?..."
-if [ $formatted -eq 0 ]
-then
-  echo "* Yes!"
-else
-  echo "* No!"
-  echo "The following files need formatting (in stage or commited):"
-  git diff --name-only
-  echo ""
-  echo "Please run 'scalafmt' to format the code"
-  echo ""
-fi
-
-echo "* Undoing formatting"
-git stash --keep-index > /dev/null
-git stash drop > /dev/null
-
+echo "* Applying the stash with the non-staged changes…"
 if ! [ $hadNoNonStagedChanges -eq 0 ]
 then
 	echo "* Scheduling stash pop of previously stashed non-staged changes for 1 second after commit"

@@ -65,3 +65,6 @@ lazy val root = (project in file("."))
       flywayCore
     )
   )
+
+addCommandAlias("style", "Compile/scalafix; Test/scalafix; Compile/scalafmt; Test/scalafmt; scalafmtSbt")
+addCommandAlias("styleCheck", "Compile/scalafix --check; Test/scalafix --check; Compile/scalafmtCheck; Test/scalafmtCheck; scalafmtSbtCheck")
