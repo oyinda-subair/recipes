@@ -5,6 +5,7 @@
 # changes.
 # Intended as git pre-commit hook
 
+echo "* Moving to the project directory…"
 _DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 DIR=$( echo $_DIR | sed 's/\/.git\/hooks$//' )
 
@@ -28,22 +29,26 @@ echo "* Compiles?"
 if [ $compiles -eq 0 ]
 then
 	echo "* Yes!"
-
-	echo "* Properly formatted?"
-	git diff --quiet
-	formatted=$?
-
-	if [ $formatted -eq 0 ]
-	then
-		echo "* Yes!"
-	else
-		echo "* No!"
-		echo "The following files need formatting (in stage or commited):"
-		git diff --name-only
-		echo ""
-	fi
 else
 	echo "* No!"
+fi
+
+echo "* Formatting staged changes..."
+cd $DIR/; sbt scalafmt
+git diff --quiet
+formatted=$?
+
+echo "* Properly Formatted?..."
+if [ $formatted -eq 0 ]
+then
+  echo "* Yes!"
+else
+  echo "* No!"
+  echo "The following files need formatting (in stage or commited):"
+  git diff --name-only
+  echo ""
+  echo "Please run 'scalafmt' to format the code"
+  echo ""
 fi
 
 echo "* Undoing formatting"
