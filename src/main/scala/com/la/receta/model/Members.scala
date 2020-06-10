@@ -37,12 +37,12 @@ class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionCo
     val userId = UUID.randomUUID().toString
     val user = Member(userId, entity.username, entity.email, entity.password, now, None)
 
-    logger.info("INSERTING into database: adding new user")
+    log.info("INSERTING into database: adding new user")
     db.run(member.insertOrUpdate(user)).map(_ => userId)
   }
 
   def findById(id: String): Future[Option[Member]] = {
-    logger.info("QUERYING the database: get user by id")
+    log.info("QUERYING the database: get user by id")
     db.run (member.filter(_.userId === id).result.headOption)
   }
 }

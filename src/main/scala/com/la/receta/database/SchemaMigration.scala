@@ -8,7 +8,7 @@ import slick.jdbc.{DataSourceJdbcDataSource, JdbcProfile}
 import scala.util.control.NonFatal
 
 class SchemaMigration(implicit val db: JdbcProfile#Backend#Database) extends ApplicationConfiguration {
-  def withMigration(dir: Seq[String], schema: String = "recipes", baseline: Boolean = false): JdbcProfile#Backend#Database = {
+  def withMigration(dir: Seq[String], schema: String = "recipes", baseline: Boolean = false, shutdown: => Unit = {} ): JdbcProfile#Backend#Database = {
     val flyway = Flyway.configure()
     val ds = db.source match {
       case d: DataSourceJdbcDataSource =>
@@ -25,13 +25,15 @@ class SchemaMigration(implicit val db: JdbcProfile#Backend#Database) extends App
 //    flyway.schemas(schema)
 
     try {
-      flyway.load().migrate()
+      log.info("Conducting database schema migrations if needed.")
+      val completed = flyway.load().migrate()
+      log.info(s"Completed $completed successful migrations.")
+
     } catch {
       case NonFatal(ex) =>
-        ex.printStackTrace()
-        db.shutdown
+        log.error(s"Failed to migrate database. ${ex.printStackTrace()}")
+        shutdown
     }
-
     db
   }
 }

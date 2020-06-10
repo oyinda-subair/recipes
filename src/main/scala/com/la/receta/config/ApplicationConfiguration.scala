@@ -10,14 +10,9 @@ trait ApplicationConfiguration {
   lazy val className: String = if(this.getClass.getCanonicalName != null)
     this.getClass.getCanonicalName else "none"
 
-  val dbUrl: String = sys.env.getOrElse("MYSQL_URL", "jdbc:mysql://localhost:3306/recipes")
-  val dbUsername: String = sys.env.getOrElse("MYSQL_USERNAME", "root")
-  val dbPassword: String = sys.env.getOrElse("MYSQL_PASSWORD", "password")
+  val dbUrl: String = sys.env.getOrElse("MYSQL_URL", "")
+  val dbUsername: String = sys.env.getOrElse("MYSQL_USERNAME", "")
+  val dbPassword: String = sys.env.getOrElse("MYSQL_PASSWORD", "")
 
-  val logger: Logger = LoggerFactory.getLogger(className)
-
-//  val t = 0
-//  val oldT = 0
-//
-//  logger.debug("Temperature set to {}. Old temperature was {}.", t, oldT)
+  val log: Logger = LoggerFactory.getLogger(className)
 }
