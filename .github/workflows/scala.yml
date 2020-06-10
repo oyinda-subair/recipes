@@ -22,20 +22,17 @@ jobs:
       MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
       - name: Shutdown Ubuntu MySQL (SUDO)
         run: sudo service mysql stop
       - name: Setup Databasee
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3800
-          container port: 3307
-          mysql version: '8.0'
-          character set server: 'utf8'
-          collation server: 'utf8_general_ci'
-          mysql database: 'recipes'
-          mysql root password: ${{ secrets.DATABASE_PASSWORD }}
-          mysql user: ${{ secrets.DATABASE_USERNAME }}
-          mysql password: ${{ secrets.DATABASE_PASSWORD }}
+        run: |
+          echo "${{ secrets.DATABASE_URL }} ${{ secrets.DATABASE_USERNAME }}"
+          docker-compose -f docker-compose.yml up -d
       - name: Run tests
         run: sbt coverage test
       - name: Coverage Report

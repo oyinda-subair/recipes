@@ -12,11 +12,10 @@ services:
       MYSQL_ROOT_PASSWORD: '${MYSQL_PASSWORD}'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '3306:3306'
-    options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      - '3800:3307'
     expose:
       # Opens port 3306 on the container
-      - '3306'
+      - '3307'
       # Where our data will be persisted
     volumes:
       - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
