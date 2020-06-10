@@ -32,7 +32,7 @@ class SchemaMigration(implicit val db: JdbcProfile#Backend#Database)
 //    flyway.schemas(schema)
 
     try {
-      log.debug(s"Connecting to database: $dbUrl")
+      log.info(s"Connecting to database: $dbUrl")
       log.info("Conducting database schema migrations if needed.")
       val completed = flyway.load().migrate()
       log.info(s"Completed $completed successful migrations.")
