@@ -21,15 +21,25 @@ class MemberTable(tag: Tag) extends Table[Member](tag, "user_by_id") {
   def timestampCreated: Rep[DateTime] = column[DateTime]("timestamp_created")
   def timestampUpdated: Rep[Option[DateTime]] = column[Option[DateTime]]("timestamp_updated")
 
-  def * = (userId, username, email, password, timestampCreated, timestampUpdated) <> (Member.tupled, Member.unapply)
+  def * =
+    (
+      userId,
+      username,
+      email,
+      password,
+      timestampCreated,
+      timestampUpdated
+    ) <> (Member.tupled, Member.unapply)
 }
 
 trait Members {
   def insert(entity: CreateMemberRequest): Future[String]
-  def findById(id: String) : Future[Option[Member]]
+  def findById(id: String): Future[Option[Member]]
 }
 
-class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionContext) extends Members with ApplicationConfiguration {
+class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionContext)
+    extends Members
+    with ApplicationConfiguration {
   val member = TableQuery[MemberTable]
 
   def insert(entity: CreateMemberRequest): Future[String] = {
@@ -43,6 +53,6 @@ class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionCo
 
   def findById(id: String): Future[Option[Member]] = {
     log.info("QUERYING the database: get user by id")
-    db.run (member.filter(_.userId === id).result.headOption)
+    db.run(member.filter(_.userId === id).result.headOption)
   }
 }

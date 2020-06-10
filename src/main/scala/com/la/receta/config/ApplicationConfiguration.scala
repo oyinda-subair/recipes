@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory
 trait ApplicationConfiguration {
   private val config = ConfigFactory.load()
 
-  lazy val className: String = if(this.getClass.getCanonicalName != null)
-    this.getClass.getCanonicalName else "none"
+  lazy val className: String =
+    if (this.getClass.getCanonicalName != null)
+      this.getClass.getCanonicalName
+    else "none"
 
   val dbUrl: String = sys.env.getOrElse("MYSQL_URL", "")
   val dbUsername: String = sys.env.getOrElse("MYSQL_USERNAME", "")

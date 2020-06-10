@@ -1,5 +1,3 @@
 package com.la.receta
 
-object ServiceMain {
-
-}
+object ServiceMain {}
