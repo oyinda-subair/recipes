@@ -1,6 +1,8 @@
 package com.la.receta.config
 
 import com.typesafe.config.ConfigFactory
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 trait ApplicationConfiguration {
   private val config = ConfigFactory.load()
@@ -8,7 +10,9 @@ trait ApplicationConfiguration {
   lazy val className: String = if(this.getClass.getCanonicalName != null)
     this.getClass.getCanonicalName else "none"
 
-  val dbUrl: String = sys.env.getOrElse("MYSQL_URL", "jdbc:mysql://localhost:3306/recipes")
-  val dbUsername: String = sys.env.getOrElse("MYSQL_USERNAME", "root")
-  val dbPassword: String = sys.env.getOrElse("MYSQL_PASSWORD", "password")
+  val dbUrl: String = sys.env.getOrElse("MYSQL_URL", "")
+  val dbUsername: String = sys.env.getOrElse("MYSQL_USERNAME", "")
+  val dbPassword: String = sys.env.getOrElse("MYSQL_PASSWORD", "")
+
+  val log: Logger = LoggerFactory.getLogger(className)
 }

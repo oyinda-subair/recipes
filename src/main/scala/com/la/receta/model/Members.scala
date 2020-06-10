@@ -9,6 +9,7 @@ import slick.jdbc.JdbcProfile
 import slick.jdbc.GetResult
 import session.profile.api._
 import com.github.tototoshi.slick.MySQLJodaSupport._
+import com.la.receta.config.ApplicationConfiguration
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -28,7 +29,7 @@ trait Members {
   def findById(id: String) : Future[Option[Member]]
 }
 
-class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionContext) extends Members {
+class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionContext) extends Members with ApplicationConfiguration {
   val member = TableQuery[MemberTable]
 
   def insert(entity: CreateMemberRequest): Future[String] = {
@@ -36,10 +37,12 @@ class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionCo
     val userId = UUID.randomUUID().toString
     val user = Member(userId, entity.username, entity.email, entity.password, now, None)
 
-    db.run(member +=  user).map(_ => userId)
+    log.info("INSERTING into database: adding new user")
+    db.run(member.insertOrUpdate(user)).map(_ => userId)
   }
 
   def findById(id: String): Future[Option[Member]] = {
+    log.info("QUERYING the database: get user by id")
     db.run (member.filter(_.userId === id).result.headOption)
   }
 }

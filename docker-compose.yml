@@ -5,11 +5,11 @@ services:
     environment:
       MYSQL_DATABASE: 'recipes'
       # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'root'
+      MYSQL_USER: '${MYSQL_USERNAME}'
       # You can use whatever password you like
-      MYSQL_PASSWORD: 'password'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
       # Password for root access
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_PASSWORD}'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '3306:3306'
