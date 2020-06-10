@@ -14,12 +14,12 @@ env:
   MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     services:
-      mariadb:
-        image: mariadb:latest
+      mysql:
+        image: mysql:8.0
         ports:
           - 3306
         env:
@@ -30,13 +30,6 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
     steps:
       - uses: actions/checkout@v1
-      - name: Verify MySql connection
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-            sleep 1
-          done
       - name: Run tests
         run: sbt clean coverage test
       - name: Coverage Report
