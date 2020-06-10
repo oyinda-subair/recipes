@@ -36,3 +36,5 @@ project/plugins/project/
 .worksheet
 .sc
 /bin/
+
+codecov.yml

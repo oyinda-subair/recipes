@@ -34,7 +34,7 @@ jobs:
           echo "${{ secrets.DATABASE_URL }} ${{ secrets.DATABASE_USERNAME }}"
           docker-compose -f docker-compose.yml up -d
       - name: Run tests
-        run: sbt coverage test
+        run: sbt clean coverage test
       - name: Coverage Report
         run: sbt coverageReport
       - name: Upload coverage to Codecov
