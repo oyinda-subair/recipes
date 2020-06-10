@@ -8,25 +8,24 @@ on:
     branches:
       - master
       - develop
+env:
+  MYSQL_URL: ${{ secrets.DATABASE_URL }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      MYSQL_URL: ${{ secrets.DATABASE_URL }}
-      MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - name: Shutdown Ubuntu MySQL (SUDO)
         run: sudo service mysql stop
       - name: Setup Databasee
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql database: "recipes
-          mysql root password: ${{env.MYSQL_PASSWORD}}
-          mysql user: ${{env.MYSQL_USERNAME}}
-          mysql password: ${{env.MYSQL_PASSWORD}}
+          host port: 3800
           mysql version: '8.0'
+          mysql database: 'recipes'
+          mysql root password: ${{ secrets.DATABASE_PASSWORD }}
+          mysql user: ${{ secrets.DATABASE_USERNAME }}
+          mysql password: ${{ secrets.DATABASE_PASSWORD }}
   test:
     runs-on: ubuntu-latest
     env:
