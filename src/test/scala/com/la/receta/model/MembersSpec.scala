@@ -7,7 +7,12 @@ import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class MembersSpec extends AnyWordSpec with Matchers with ScalaFutures with IntegrationPatience with RecetaTestkit {
+class MembersSpec
+    extends AnyWordSpec
+    with Matchers
+    with ScalaFutures
+    with IntegrationPatience
+    with RecetaTestkit {
 
   "Members" should {
     "create member with valid request" in {

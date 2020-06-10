@@ -21,7 +21,7 @@ then
 fi
 
 echo "* Compiling/formatting staged changes"
-cd $DIR/; sbt test:compile > /dev/null
+cd $DIR/; sbt test:compile; sbt scalafmtSbt > /dev/null
 compiles=$?
 
 echo "* Compiles?"
@@ -31,7 +31,7 @@ then
 	echo "* Yes!"
 	echo ""
 	echo "* Formatting staged changes..."
-  sbt test:scalastyle > /dev/null
+  sbt test:styleCheck > /dev/null
   git diff --quiet
   formatted=$?
 
@@ -44,7 +44,7 @@ then
     echo "The following files need formatting (in stage or commited):"
     git diff --name-only
     echo ""
-    echo "Please run 'sbt scalastyle' to format the code"
+    echo "Please run 'sbt styleCheck' to format the code"
     echo ""
   fi
 else

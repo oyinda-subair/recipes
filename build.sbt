@@ -66,5 +66,5 @@ lazy val root = (project in file("."))
     )
   )
 
-addCommandAlias("style", "Compile/scalafix; Test/scalafix; Compile/scalafmt; Test/scalafmt; scalafmtSbt")
-addCommandAlias("styleCheck", "Compile/scalafix --check; Test/scalafix --check; Compile/scalafmtCheck; Test/scalafmtCheck; scalafmtSbtCheck")
+addCommandAlias("style", "Compile/scalafmt; Test/scalafmt; scalafmtSbt")
+addCommandAlias("styleCheck", "Compile/scalafmtCheck; Test/scalafmtCheck; scalafmtSbtCheck")
