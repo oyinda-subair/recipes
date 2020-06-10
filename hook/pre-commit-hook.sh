@@ -20,7 +20,7 @@ then
 fi
 
 echo "* Compiling/formatting staged changes"
-$DIR/sbt ";test:compile;format" > /dev/null
+cd $DIR/; sbt test:compile > /dev/null
 compiles=$?
 
 echo "* Compiles?"
