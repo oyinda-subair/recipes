@@ -10,6 +10,8 @@ on:
       - develop
 env:
   MYSQL_URL: ${{ secrets.DATABASE_URL }}
+  MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+  MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
   build:
