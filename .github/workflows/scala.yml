@@ -15,6 +15,9 @@ env:
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
   tests:
+    runs-on: ubuntu-latest
+    - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
     services:
       mariadb:
         image: mariadb:latest
@@ -26,7 +29,6 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
         with:
@@ -40,10 +42,10 @@ jobs:
           sudo apt-get install -y mysql-client
           mysql --host 0.0.0.0 --port 3306 -uroot -ppassword -e "SHOW DATABASES;"
       - name: Verify MariaDB connection
-        run: mysql -umysql < .docker/setup.sql
+        run: mysql --host 0.0.0.0 --port 3306 -uroot -ppassword < .docker/setup.sql
       - name: Run tests
         env:
-          MYSQL_URL: "mysql2://mysql:mysql@0.0.0.0:${{ job.services.mariadb.ports['3306'] }}/recipes"
+          MYSQL_URL: "mysql2://root:password@0.0.0.0:3306/recipes"
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
