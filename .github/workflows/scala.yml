@@ -18,28 +18,28 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mariadb:
-        image: mariadb:latest
-        ports:
-          - 3306:3306
+      mysql:
+        image: mysql:8.0
         env:
           MYSQL_USER: root
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: recipes
           MYSQL_ROOT_PASSWORD: password
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
       - name: Verify MariaDB connection
         env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
+          PORT: ${{ job.services.mysql.ports[3306] }}
         run: mysql -h 127.0.0.1 --port 3306 -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
 
       - name: Run tests
         env:
-          MYSQL_URL: ${{ secrets.DATABASE_URL }}
+          MYSQL_URL: "mysql2://root:password@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/recipes"
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
