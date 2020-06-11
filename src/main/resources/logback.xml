@@ -13,6 +13,7 @@
     <logger name="slick" level="INFO"/>
     <logger name="com.la.receta" level="INFO"/>
     <logger name="slick.jdbc.JdbcBackend.statement"  level="DEBUG" />
+    <logger name="org.flywaydb"  level="DEBUG" />
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />

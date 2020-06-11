@@ -1,4 +1,4 @@
-name: Scala CI
+name: Tests
 on:
   push:
     branches:
@@ -8,25 +8,35 @@ on:
     branches:
       - master
       - develop
+env:
+  MYSQL_URL: ${{ secrets.DATABASE_URL }}
+  MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+  MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  MYSQL_HOST: localhost
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
-    env:
-      MYSQL_URL: ${{secret.MYSQL_URL}}
-      MYSQL_USERNAME: ${{secret.MYSQL_USERNAME}}
-      MYSQL_PASSWORD: ${{MYSQL_PASSWORD}}
     steps:
-      - uses: actions/checkout@v2
-      - name: Build docker-compose
-        run: docker-compose up -d
+      - uses: actions/checkout@v1
+      - name: Start Ubuntu MySQL (SUDO)
+        run: sudo systemctl start mysql.service
+      - name: Verify MySQL connection from host
+        run: mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+      - name: Clean Database
+        run: sbt test:flywayClean
+      - name: Migrate database
+        run: sbt test:flywayMigrate
       - name: Run tests
-        run: sbt coverage test
+        run: sbt clean coverage test
       - name: Coverage Report
         run: sbt coverageReport
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
+
   lint:
     runs-on: ubuntu-latest
     steps:
