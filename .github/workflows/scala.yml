@@ -40,7 +40,8 @@ jobs:
           sudo /usr/sbin/mysqld  --skip-grant-tables
           mysql -u root mysql -e 'UPDATE user SET Password=PASSWORD('password') where USER='root';'
           mysql -u root mysql -e 'FLUSH PRIVILEGES;'
-          sudo /etc/init.d/mysql restart
+          sudo /etc/init.d/mysql stop
+          sudo /etc/init.d/mysql start
       - name: Verify MariaDB connection
         run: mysql -uroot -ppassword < .docker/setup.sql
       - name: Run tests
