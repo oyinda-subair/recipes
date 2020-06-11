@@ -9,7 +9,7 @@ on:
       - master
       - develop
 env:
-  MYSQL_URL: "mysql2://root:password@127.0.0.1:3307/recipes"
+  MYSQL_URL: "mysql2://root:password@127.0.0.1:3306/recipes"
   MYSQL_USERNAME: root
   MYSQL_PASSWORD: password
   MYSQL_ROOT_PASSWORD: password
@@ -19,30 +19,18 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
-      - name: Set up MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3800 # Optional, default value is 3306. The port of host
-          container port: 3306 # Optional, default value is 3306. The port of container
-          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-          mysql version: '8.0'
-          mysql database: 'recipes' # Optional, default value is "test". The specified database which will be create
-          mysql root password: password # Required if "mysql user" is empty, default is empty. The root superuser password
-          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: password # Required if "mysql user" exists. The password for the "mysql user"
       - uses: actions/checkout@v1
+      - name: Start Ubuntu MySQL (SUDO)
+        run: sudo systemctl start mysql.service
       - name:  Verify MySQL connection from host
         run: |
           sudo apt-get install -y mysql-client
-          mysql -uroot -ppassword -e 'SHOW DATABASES;'
+          mysql -uroot -proot -e 'SHOW DATABASES;'
       - name: Verify MariaDB connection
-        run: mysql -uroot -ppassword -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+        run: mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS recipes;'
       - name: Run tests
         env:
-          MYSQL_URL: "mysql2://root:password@127.0.0.1/recipes"
+          MYSQL_URL: "mysql2://root:root@127.0.0.1:3306/recipes"
           MYSQL_ROOT_PASSWORD: password
           MYSQL_HOST: localhost
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
