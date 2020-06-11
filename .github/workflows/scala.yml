@@ -31,13 +31,17 @@ jobs:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
+      - name: Set up JDK
+          uses: actions/setup-java@v1
+          with:
+            java-version: 1.8
       - name: Start Database
         run: |
           sudo /etc/init.d/mysql start
       - name: Verify MariaDB connection
         env:
           PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: mysql -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+        run: mysql -uroot -ppassword <../../.docker/setup.sql
 
       - name: Run tests
         env:
