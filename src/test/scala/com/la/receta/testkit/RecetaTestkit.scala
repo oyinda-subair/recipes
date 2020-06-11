@@ -10,7 +10,7 @@ trait RecetaTestkit {
 
   implicit val db = Connector.session.db
   val location = Seq("db/migration")
-  val flyway = new SchemaMigration().withMigration(location)
+//  val flyway = new SchemaMigration().withMigration(location)
   val memberDb = new MembersImpl()
 
   private val random = new Random(System.currentTimeMillis)

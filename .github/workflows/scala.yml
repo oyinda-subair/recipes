@@ -24,14 +24,11 @@ jobs:
         run: sudo systemctl start mysql.service
       - name: Verify MySQL connection from host
         run: mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+      - name: Clean Database
+        run: sbt test:flywayClean
+      - name: Migrate database
+        run: sbt test:flywayMigrate
       - name: Run tests
-        env:
-          MYSQL_URL: ${{ secrets.DATABASE_URL }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          MYSQL_HOST: localhost
-          MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: sbt clean coverage test
       - name: Coverage Report
         run: sbt coverageReport

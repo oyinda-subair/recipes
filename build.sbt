@@ -49,6 +49,7 @@ lazy val commonSettings = Seq(
 )
 
 lazy val root = (project in file("."))
+  .enablePlugins(FlywayPlugin)
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
@@ -65,6 +66,15 @@ lazy val root = (project in file("."))
       flywayCore
     )
   )
+
+flywayUrl := sys.env.getOrElse("MYSQL_URL", "some default value")
+flywayUser := sys.env.getOrElse("MYSQL_USERNAME", "some default value")
+flywayPassword := sys.env.getOrElse("MYSQL_PASSWORD", "some default value")
+flywayLocations += "db/migration"
+flywayUrl in Test := sys.env.getOrElse("MYSQL_URL", "some default value")
+flywayUser in Test := sys.env.getOrElse("MYSQL_USERNAME", "some default value")
+flywayPassword in Test := sys.env.getOrElse("MYSQL_PASSWORD", "some default value")
+flywayBaselineOnMigrate := true
 
 addCommandAlias("style", "Compile/scalafmt; Test/scalafmt; scalafmtSbt")
 addCommandAlias("styleCheck", "Compile/scalafmtCheck; Test/scalafmtCheck; scalafmtSbtCheck")
