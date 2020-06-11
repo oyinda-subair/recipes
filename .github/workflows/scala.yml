@@ -12,6 +12,8 @@ env:
   MYSQL_URL: "mysql2://root:password@0.0.0.0:8888/recipes"
   MYSQL_USERNAME: root
   MYSQL_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: password
+  MYSQL_HOST: localhost
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
   tests:
@@ -24,6 +26,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: recipes
+          MYSQL_HOST: localhost
         ports:
           - 8888:3307
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
@@ -37,6 +40,8 @@ jobs:
       - name: Run tests
         env:
           MYSQL_URL: "mysql2://root:password@0.0.0.0:8888/recipes"
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_HOST: localhost
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
