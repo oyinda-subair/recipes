@@ -16,9 +16,9 @@ env:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
     services:
+      - name: Shutdown Ubuntu MySQL (SUDO)
+          run: sudo service mysql stop
       mariadb:
         image: mariadb:latest
         env:
