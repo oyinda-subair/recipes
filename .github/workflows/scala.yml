@@ -9,10 +9,10 @@ on:
       - master
       - develop
 env:
-  MYSQL_URL: "jdbc:mysql://root:password@127.0.0.1:3306/recipes"
-  MYSQL_USERNAME: root
-  MYSQL_PASSWORD: password
-  MYSQL_ROOT_PASSWORD: password
+  MYSQL_URL: ${{ secrets.DATABASE_URL }}
+  MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+  MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   MYSQL_HOST: localhost
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
@@ -22,16 +22,12 @@ jobs:
       - uses: actions/checkout@v1
       - name: Start Ubuntu MySQL (SUDO)
         run: sudo systemctl start mysql.service
-      - name:  Verify MySQL connection from host
-        run: |
-          sudo apt-get install -y mysql-client
-          mysql -uroot -proot -e 'SHOW DATABASES;'
-      - name: Verify MariaDB connection
-        run: mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+      - name: Verify MySQL connection from host
+        run: mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD -e 'CREATE DATABASE IF NOT EXISTS recipes;'
       - name: Run tests
         env:
-          MYSQL_URL: "jdbc:mysql://root:root@127.0.0.1:3306/recipes"
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_URL: ${{ secrets.DATABASE_URL }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           MYSQL_HOST: localhost
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
