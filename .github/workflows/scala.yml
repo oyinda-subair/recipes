@@ -37,8 +37,7 @@ jobs:
           java-version: 1.8
       - name: Start Database
         run: |
-          sudo /etc/init.d/mysql start
-          mysqld --skip-grant-tables
+          sudo /etc/init.d/mysql start  --skip-grant-tables
           mysql -u root mysql -e 'UPDATE user SET Password=PASSWORD('password') where USER='root';'
           mysql -u root mysql -e 'FLUSH PRIVILEGES;'
           sudo /etc/init.d/mysql restart
