@@ -38,11 +38,12 @@ jobs:
       - name: Start Database
         run: |
           sudo /etc/init.d/mysql start
+          mysqld --skip-grant-tables
+          mysql -u root mysql -e 'UPDATE user SET Password=PASSWORD('password') where USER='root';'
+          mysql -u root mysql -e 'FLUSH PRIVILEGES;'
+          sudo /etc/init.d/mysql restart
       - name: Verify MariaDB connection
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
         run: mysql -uroot -ppassword < .docker/setup.sql
-
       - name: Run tests
         env:
           MYSQL_URL: "mysql2://root:password@0.0.0.0:${{ job.services.mariadb.ports['3306'] }}/recipes"
