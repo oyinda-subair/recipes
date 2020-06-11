@@ -37,7 +37,7 @@ jobs:
       - name: Verify MariaDB connection
         env:
           PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: mysql -h 0.0.0.0 --port 3306 -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+        run: mysql -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
 
       - name: Run tests
         env:
