@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS recipes.user_by_id (
     email varchar(150) not null,
     password varchar(150) not null,
     timestamp_created TIMESTAMP not null,
-    timestamp_updated timestamp,
+    timestamp_updated TIMESTAMP null DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (user_id, username, email),
     PRIMARY KEY (user_id)
 );
