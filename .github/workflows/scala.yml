@@ -38,7 +38,7 @@ jobs:
       - name:  Verify MySQL connection from host
         run: |
           sudo apt-get install -y mysql-client
-          mysql --host mysql --port 3306 -uroot -ppassword -e "SHOW DATABASES;"
+          mysql --host 0.0.0.0 --port 3306 -uroot -ppassword -e "SHOW DATABASES;"
       - name: Verify MariaDB connection
         run: mysql -umysql < .docker/setup.sql
       - name: Run tests
