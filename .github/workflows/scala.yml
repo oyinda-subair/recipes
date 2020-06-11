@@ -15,7 +15,6 @@ env:
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 jobs:
   tests:
-    runs-on: ubuntu-latest
     services:
       mariadb:
         image: mariadb:latest
@@ -27,6 +26,7 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
         with:
@@ -35,9 +35,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Start Database
+      - name:  Verify MySQL connection from host
         run: |
-          sudo /etc/init.d/mysql start
+        sudo apt-get install -y mysql-client mysql --host mysql --port 3306 -uroot -ppassword -e "SHOW DATABASES;"
       - name: Verify MariaDB connection
         run: mysql -umysql < .docker/setup.sql
       - name: Run tests
