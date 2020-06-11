@@ -34,11 +34,11 @@ jobs:
       - name: Verify MariaDB connection
         env:
           PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: mysql -h 127.0.0.1 --port 3306 -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+        run: mysql -h 0.0.0.0 --port 3306 -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
 
       - name: Run tests
         env:
-          MYSQL_URL: "mysql2://root:password@127.0.0.1:${{ job.services.mariadb.ports['3306'] }}/recipes"
+          MYSQL_URL: "mysql2://root:password@0.0.0.0:${{ job.services.mariadb.ports['3306'] }}/recipes"
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
