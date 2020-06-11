@@ -18,19 +18,31 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mariadb:
-        image: mariadb:latest
+      mysql:
+        image: mysql:8.0
         ports:
-          - 3306
+          - 3306:3306
         env:
           MYSQL_USER: root
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: recipes
           MYSQL_ROOT_PASSWORD: password
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v1
+        with:
+          fetch-depth:1
+      - name: Verify MariaDB connection
+        env:
+          PORT: ${{ job.services.mariadb.ports[3306] }}
+        run: mysql -h 127.0.0.1 --port 3306 -u root -p password -e 'CREATE DATABASE IF NOT EXISTS recipes;'
+
       - name: Run tests
+        env:
+          MYSQL_URL: ${{ secrets.DATABASE_URL }}
+          MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: sbt clean coverage test
       - name: Coverage Report
         run: sbt coverageReport
