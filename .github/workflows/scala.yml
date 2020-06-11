@@ -37,16 +37,12 @@ jobs:
           java-version: 1.8
       - name: Start Database
         run: |
-          sudo /usr/sbin/mysqld  --skip-grant-tables
-          mysql -u root mysql -e 'UPDATE user SET Password=PASSWORD('password') where USER='root';'
-          mysql -u root mysql -e 'FLUSH PRIVILEGES;'
-          sudo /etc/init.d/mysql stop
           sudo /etc/init.d/mysql start
       - name: Verify MariaDB connection
-        run: mysql -uroot -ppassword < .docker/setup.sql
+        run: mysql -umysql < .docker/setup.sql
       - name: Run tests
         env:
-          MYSQL_URL: "mysql2://root:password@0.0.0.0:${{ job.services.mariadb.ports['3306'] }}/recipes"
+          MYSQL_URL: "mysql2://mysql:mysql@0.0.0.0:${{ job.services.mariadb.ports['3306'] }}/recipes"
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
