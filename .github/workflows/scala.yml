@@ -9,7 +9,7 @@ on:
       - master
       - develop
 env:
-  MYSQL_URL: "mysql2://root:password@127.0.0.1:3306/recipes"
+  MYSQL_URL: "jdbc:mysql://root:password@127.0.0.1:3306/recipes"
   MYSQL_USERNAME: root
   MYSQL_PASSWORD: password
   MYSQL_ROOT_PASSWORD: password
@@ -30,7 +30,7 @@ jobs:
         run: mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS recipes;'
       - name: Run tests
         env:
-          MYSQL_URL: "mysql2://root:root@127.0.0.1:3306/recipes"
+          MYSQL_URL: "jdbc:mysql://root:root@127.0.0.1:3306/recipes"
           MYSQL_ROOT_PASSWORD: password
           MYSQL_HOST: localhost
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
