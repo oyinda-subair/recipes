@@ -25,25 +25,18 @@ jobs:
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: recipes
         ports:
-          - 3307
+          - 8888:3307
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
     steps:
       - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       - name:  Verify MySQL connection from host
         run: |
-          sudo apt-get install -y mysql-client
-          mysql --host 0.0.0.0 --port 3307 -uroot -ppassword -e "SHOW DATABASES;"
+          mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e "SHOW DATABASES;"
       - name: Verify MariaDB connection
-        run: mysql --host 0.0.0.0 --port 3307 -uroot -ppassword < .docker/setup.sql
+        run: mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS recipes;'
       - name: Run tests
         env:
-          MYSQL_URL: "mysql2://root:password@0.0.0.0:3307/recipes"
+          MYSQL_URL: "mysql2://root:password@0.0.0.0:8888/recipes"
           MYSQL_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
