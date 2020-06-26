@@ -9,15 +9,17 @@ import slick.jdbc.JdbcProfile
 import slick.jdbc.GetResult
 import session.profile.api._
 import com.github.tototoshi.slick.MySQLJodaSupport._
-import com.la.receta.config.ApplicationConfiguration
+import com.la.receta.config.{ApplicationConfiguration, ApplicationLogger}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class MemberTable(tag: Tag) extends Table[Member](tag, "user_by_id") {
-  def userId = column[String]("user_id", O.PrimaryKey)
-  def username = column[String]("username")
-  def email = column[String]("email")
-  def password = column[String]("password")
+  def userId: Rep[String] = column[String]("user_id", O.PrimaryKey)
+  def username: Rep[String] = column[String]("username", O.Unique)
+  val indexUsername = index("index_username", username, unique = true)
+  def email: Rep[String] = column[String]("email", O.Unique)
+  val indexEmail = index("index_email", email, unique = true)
+  def password: Rep[String] = column[String]("password")
   def timestampCreated: Rep[DateTime] = column[DateTime]("timestamp_created")
   def timestampUpdated: Rep[Option[DateTime]] = column[Option[DateTime]]("timestamp_updated")
 
@@ -29,30 +31,32 @@ class MemberTable(tag: Tag) extends Table[Member](tag, "user_by_id") {
       password,
       timestampCreated,
       timestampUpdated
-    ) <> (Member.tupled, Member.unapply)
+    ) <> ((Member.apply _).tupled, Member.unapply)
 }
 
 trait Members {
-  def insert(entity: CreateMemberRequest): Future[String]
+  def insert(entity: Member): Future[String]
   def findById(id: String): Future[Option[Member]]
+  def findByEmail(email: String): Future[Option[Member]]
 }
 
-class MembersImpl(implicit val db: JdbcProfile#Backend#Database, ec: ExecutionContext)
+class MembersImpl(db: JdbcProfile#Backend#Database)(implicit val ec: ExecutionContext)
     extends Members
-    with ApplicationConfiguration {
+    with ApplicationLogger {
   val member = TableQuery[MemberTable]
 
-  def insert(entity: CreateMemberRequest): Future[String] = {
-    val now = DateTime.now
-    val userId = UUID.randomUUID().toString
-    val user = Member(userId, entity.username, entity.email, entity.password, now, None)
-
+  def insert(entity: Member): Future[String] = {
     log.info("INSERTING into database: adding new user")
-    db.run(member.insertOrUpdate(user)).map(_ => userId)
+    db.run(member.insertOrUpdate(entity)).map(_ => entity.userId)
   }
 
   def findById(id: String): Future[Option[Member]] = {
     log.info("QUERYING the database: get user by id")
     db.run(member.filter(_.userId === id).result.headOption)
+  }
+
+  def findByEmail(email: String): Future[Option[Member]] = {
+    log.info("QUERYING the database: get user by email")
+    db.run(member.filter(_.email === email).result.headOption)
   }
 }
