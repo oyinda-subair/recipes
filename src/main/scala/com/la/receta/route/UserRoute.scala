@@ -18,7 +18,7 @@ class UserRoute(controller: UserController)(implicit
 ) extends PlayJsonSupport {
 
   val version = "v1"
-  val service = "member"
+  val service = "members"
 
   protected val createMember: Route =
     path(service / version / "members") {
