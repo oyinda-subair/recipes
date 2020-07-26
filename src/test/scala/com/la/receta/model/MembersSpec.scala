@@ -1,7 +1,7 @@
 package com.la.receta.model
 
 import com.la.receta.database.{Connector, SchemaMigration}
-import com.la.receta.entities.CreateMemberRequest
+import com.la.receta.entities.{CreateMemberRequest, Member}
 import com.la.receta.testkit.RecetaTestkit
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
@@ -17,9 +17,12 @@ class MembersSpec
   "Members" should {
     "create member with valid request" in {
 
-      val request = CreateMemberRequest(s"$string10", s"$string10@example.com", "password")
+      val request =
+        CreateMemberRequest(string10, s"user-$string10", s"$string10@example.com", "password")
+      val memberEntity =
+        Member.create(request.name, request.username, request.email, request.password)
 
-      val result = memberDb.insert(request).futureValue
+      val result = memberDb.insert(memberEntity).futureValue
       val member = memberDb.findById(result).futureValue
 
       member.isDefined shouldBe true

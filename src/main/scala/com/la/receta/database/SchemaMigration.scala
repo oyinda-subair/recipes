@@ -1,6 +1,6 @@
 package com.la.receta.database
 
-import com.la.receta.config.ApplicationConfiguration
+import com.la.receta.config.{ApplicationConfiguration, ApplicationLogger}
 import org.flywaydb.core.Flyway
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 import slick.jdbc.{DataSourceJdbcDataSource, JdbcProfile}
@@ -8,7 +8,8 @@ import slick.jdbc.{DataSourceJdbcDataSource, JdbcProfile}
 import scala.util.control.NonFatal
 
 class SchemaMigration(implicit val db: JdbcProfile#Backend#Database)
-    extends ApplicationConfiguration {
+    extends ApplicationConfiguration
+    with ApplicationLogger {
 
   def withMigration(
     dir: Seq[String],
@@ -32,7 +33,6 @@ class SchemaMigration(implicit val db: JdbcProfile#Backend#Database)
 //    flyway.schemas(schema)
 
     try {
-      log.info(s"Connecting to database: $dbUrl")
       log.info("Conducting database schema migrations if needed.")
       val completed = flyway.load().migrate()
       log.info(s"Completed $completed successful migrations.")
