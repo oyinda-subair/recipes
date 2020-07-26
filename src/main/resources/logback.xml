@@ -10,10 +10,13 @@
         </encoder>
     </appender>
 
-    <logger name="slick" level="INFO"/>
+    <logger name="slick" level="ERROR"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="ERROR"/>
+    <logger name="com.zaxxer.hikari.HikariConfig" level="ERROR"/>
+    <logger name="com.zaxxer.hikari.HikariDataSource" level="ERROR"/>
     <logger name="com.la.receta" level="INFO"/>
-    <logger name="slick.jdbc.JdbcBackend.statement"  level="DEBUG" />
-    <logger name="org.flywaydb"  level="DEBUG" />
+    <logger name="slick.jdbc.JdbcBackend.statement"  level="ERROR" />
+    <logger name="org.flywaydb"  level="ERROR" />
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />

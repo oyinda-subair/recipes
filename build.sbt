@@ -18,12 +18,14 @@ val PlayJsonVersion = "2.9.0"
 val PlayJsonSupportVersion = "1.32.0"
 val ScalaFmtVersion = "2.5.3"
 val BcyrptVersion = "0.4"
+val AkkaHttpCorsVersion = "1.0.0"
 
 
 
 val akkaSlick  = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % SlickVersion
 val akkaStream = "com.typesafe.akka" %% "akka-stream" % AkkaStreamVersion
 val akkaHttp = "com.typesafe.akka" %% "akka-http" % AkkaHttVersion
+val akkaHttpCors = "ch.megard" %% "akka-http-cors" % AkkaHttpCorsVersion
 
 val mysqlJava  = "mysql" % "mysql-connector-java" % MySqlJavaVersion
 
@@ -75,6 +77,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       akkaStream,
       akkaSlick,
+      akkaHttp,
+      akkaHttpCors,
       jodaTime,
       jodaConvert,
       tototoshi,

@@ -1,4 +1,4 @@
-package com.la.receta.errorhandler
+package com.la.receta.config.errorhandler
 
 case class ResourceNotFoundException(message: String, cause: Option[Throwable] = None)
     extends Exception(message, cause.orNull)

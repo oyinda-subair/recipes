@@ -15,6 +15,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class MemberTable(tag: Tag) extends Table[Member](tag, "user_by_id") {
   def userId: Rep[String] = column[String]("user_id", O.PrimaryKey)
+  def name: Rep[String] = column[String]("full_name", O.Unique)
   def username: Rep[String] = column[String]("username", O.Unique)
   val indexUsername = index("index_username", username, unique = true)
   def email: Rep[String] = column[String]("email", O.Unique)
@@ -26,6 +27,7 @@ class MemberTable(tag: Tag) extends Table[Member](tag, "user_by_id") {
   def * =
     (
       userId,
+      name,
       username,
       email,
       password,

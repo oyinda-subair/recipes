@@ -38,8 +38,16 @@ class UserRoute(controller: UserController)(implicit
       }
     }
 
+  protected val testCor: Route =
+    path("cor-issue") {
+      post {
+        complete(HttpResponse(200))
+      }
+    }
+
   val routes: Route =
     createMember ~
-      login
+      login ~
+      testCor
 
 }

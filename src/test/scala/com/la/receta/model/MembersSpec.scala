@@ -17,8 +17,10 @@ class MembersSpec
   "Members" should {
     "create member with valid request" in {
 
-      val request = CreateMemberRequest(s"$string10", s"$string10@example.com", "password")
-      val memberEntity = Member.create(request.username, request.email, request.password)
+      val request =
+        CreateMemberRequest(string10, s"user-$string10", s"$string10@example.com", "password")
+      val memberEntity =
+        Member.create(request.name, request.username, request.email, request.password)
 
       val result = memberDb.insert(memberEntity).futureValue
       val member = memberDb.findById(result).futureValue

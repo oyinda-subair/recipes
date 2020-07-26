@@ -8,6 +8,7 @@ import play.api.libs.json.{Format, Json}
 
 case class Member(
   userId: String,
+  name: String,
   username: String,
   email: String,
   password: String,
@@ -17,10 +18,10 @@ case class Member(
 
 object Member extends FormatEntity[Member] {
 
-  def create(username: String, email: String, password: String): Member = {
+  def create(name: String, username: String, email: String, password: String): Member = {
     val now = DateTime.now
     val userId = UUID.randomUUID().toString
-    Member(userId, username, email, password, now, None)
+    Member(userId, name, username, email, password, now, None)
   }
 
   implicit val format: Format[Member] = Json.format

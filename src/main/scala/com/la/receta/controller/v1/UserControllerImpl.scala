@@ -5,7 +5,7 @@ import com.la.receta.config.{ApplicationLogger, DataResponseWrapper}
 import com.la.receta.controller.UserController
 import com.la.receta.database.RecetaDao
 import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, Member}
-import com.la.receta.errorhandler.{ResourceNotFoundException, UnauthorizedUserException}
+import com.la.receta.config.errorhandler.{ResourceNotFoundException, UnauthorizedUserException}
 import org.mindrot.jbcrypt.BCrypt
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -16,7 +16,7 @@ class UserControllerImpl(db: RecetaDao)(implicit val system: ActorSystem, ec: Ex
 
   def createMember(request: CreateMemberRequest): Future[DataResponseWrapper[String]] = {
     val password = BCrypt.hashpw(request.password, BCrypt.gensalt())
-    val entity = Member.create(request.username, request.email, password)
+    val entity = Member.create(request.name, request.username, request.email, password)
     for {
       userId <- db.UserDatabase.insert(entity)
     } yield DataResponseWrapper(userId)

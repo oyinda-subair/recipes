@@ -27,7 +27,7 @@ class UserRouteSpec
 
   "UserRoute Spec" should {
     "create new user" in {
-      val request = CreateMemberRequest(string10, s"$string10.email.com", "password")
+      val request = CreateMemberRequest(string10, string10, s"$string10.email.com", "password")
       val response = Future.successful(DataResponseWrapper("userId1"))
 
       when(userController.createMember(request)).thenReturn(response)
