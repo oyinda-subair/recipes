@@ -7,10 +7,10 @@ import akka.http.scaladsl.model.headers._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
-import com.la.receta.config.{ApplicationLogger, ErrorResponse}
+import com.la.receta.config.{ErrorResponse, Logger}
 import com.la.receta.config.errorhandler._
 
-trait RouteHandler extends ApplicationLogger {
+trait RouteHandler extends Logger {
 
   // ----- ----- Start of Cors config ----- -----
 
@@ -111,6 +111,8 @@ trait RouteHandler extends ApplicationLogger {
       case e: ResourceNotFoundException => logException(NotFound, e.message, "NotFound Exception")
       case e: UnauthorizedUserException =>
         logException(Unauthorized, e.message, "Unauthorized Exception")
+      case e: TokenExpiredException =>
+        logException(Unauthorized, e.message, "TokenExpired Exception")
       case e: Exception =>
         extractUri { uri =>
           val errorResponse = ErrorResponse(

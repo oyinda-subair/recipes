@@ -19,6 +19,7 @@ val PlayJsonSupportVersion = "1.32.0"
 val ScalaFmtVersion = "2.5.3"
 val BcyrptVersion = "0.4"
 val AkkaHttpCorsVersion = "1.0.0"
+val PauldijouVersion = "4.2.0"
 
 
 
@@ -52,6 +53,7 @@ val playJson = "com.typesafe.play" %% "play-json" % PlayJsonVersion
 val playJsonSupport = "de.heikoseeberger" %% "akka-http-play-json" % PlayJsonSupportVersion
 
 val bcyrpt   = "org.mindrot" % "jbcrypt" % BcyrptVersion
+val pauldijou = "com.pauldijou" %% "jwt-core" % PauldijouVersion
 
 
 lazy val commonSettings = Seq(
@@ -95,7 +97,8 @@ lazy val root = (project in file("."))
       mockito,
       mockitoScalaTest,
       flywayCore,
-      bcyrpt
+      bcyrpt,
+      pauldijou
     )
   )
 

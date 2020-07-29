@@ -1,15 +1,13 @@
 package com.la.receta.database
 
-import com.la.receta.config.{ApplicationConfiguration, ApplicationLogger}
+import com.la.receta.config.Logger
 import org.flywaydb.core.Flyway
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 import slick.jdbc.{DataSourceJdbcDataSource, JdbcProfile}
 
 import scala.util.control.NonFatal
 
-class SchemaMigration(implicit val db: JdbcProfile#Backend#Database)
-    extends ApplicationConfiguration
-    with ApplicationLogger {
+class SchemaMigration(implicit val db: JdbcProfile#Backend#Database) extends Logger {
 
   def withMigration(
     dir: Seq[String],

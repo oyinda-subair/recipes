@@ -1,15 +1,13 @@
 package com.la.receta.model
 
-import java.util.UUID
-
 import com.la.receta.database.Connector._
-import com.la.receta.entities.{CreateMemberRequest, Member}
+import com.la.receta.entities.Member
 import org.joda.time.DateTime
 import slick.jdbc.JdbcProfile
-import slick.jdbc.GetResult
 import session.profile.api._
 import com.github.tototoshi.slick.MySQLJodaSupport._
-import com.la.receta.config.{ApplicationConfiguration, ApplicationLogger}
+import com.la.receta.config.Logger
+import com.la.receta.config.base.Type.UserId
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,7 +42,7 @@ trait Members {
 
 class MembersImpl(db: JdbcProfile#Backend#Database)(implicit val ec: ExecutionContext)
     extends Members
-    with ApplicationLogger {
+    with Logger {
   val member = TableQuery[MemberTable]
 
   def insert(entity: Member): Future[String] = {
@@ -52,7 +50,7 @@ class MembersImpl(db: JdbcProfile#Backend#Database)(implicit val ec: ExecutionCo
     db.run(member.insertOrUpdate(entity)).map(_ => entity.userId)
   }
 
-  def findById(id: String): Future[Option[Member]] = {
+  def findById(id: UserId): Future[Option[Member]] = {
     log.info("QUERYING the database: get user by id")
     db.run(member.filter(_.userId === id).result.headOption)
   }

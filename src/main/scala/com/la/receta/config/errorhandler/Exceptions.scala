@@ -5,3 +5,12 @@ case class ResourceNotFoundException(message: String, cause: Option[Throwable] =
 
 case class UnauthorizedUserException(message: String, cause: Option[Throwable] = None)
     extends Exception(message, cause.orNull)
+
+case class TokenExpiredException(message: String, cause: Option[Throwable] = None)
+    extends Exception(message, cause.orNull)
+
+case class TokenEncodeException(message: String, cause: Option[Throwable] = None)
+    extends Exception(message, cause.orNull)
+
+case class TokenValidationException(message: String, cause: Option[Throwable] = None)
+    extends Exception(message, cause.orNull)

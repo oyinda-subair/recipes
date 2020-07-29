@@ -38,3 +38,4 @@ project/plugins/project/
 /bin/
 
 codecov.yml
+/**/**/*.sc
