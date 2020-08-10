@@ -14,3 +14,6 @@ case class TokenEncodeException(message: String, cause: Option[Throwable] = None
 
 case class TokenValidationException(message: String, cause: Option[Throwable] = None)
     extends Exception(message, cause.orNull)
+
+case class BadRequestException(message: String, cause: Option[Throwable] = None)
+  extends Exception(message, cause.orNull)

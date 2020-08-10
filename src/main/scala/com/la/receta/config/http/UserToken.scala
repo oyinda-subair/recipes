@@ -14,12 +14,11 @@ object UserToken extends Logger with ApplicationConfiguration {
 
   implicit val format: Format[UserToken] = Json.format
 
-  private val expiryPeriodInDays: Long = 1
+  private val expiryPeriodInDays: Long = 365
 
   def generate(userId: UserId): UserToken = {
     val token = encodeToken(userId)
-    val bearerToken = s"Bearer $token"
-    UserToken(bearerToken)
+    UserToken(token)
   }
 
   private def encodeToken(userId: UserId): String =

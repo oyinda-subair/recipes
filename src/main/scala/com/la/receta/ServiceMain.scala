@@ -59,7 +59,8 @@ object ServiceMain
         "x-refresh-token",
         "Origin",
         "Authorization",
-        "X-Requested-With"
+        "X-Requested-With",
+        "Set_Cookie"
       )
     )
 

@@ -6,7 +6,7 @@ case class MemberResponse (
                             userId: String,
                             name: String,
                             username: String,
-                            email: String,
+                            email: Option[String],
                           )
 
 object MemberResponse {

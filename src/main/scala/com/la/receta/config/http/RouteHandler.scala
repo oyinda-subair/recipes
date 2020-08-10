@@ -109,6 +109,7 @@ trait RouteHandler extends Logger {
   def myExceptionHandler: ExceptionHandler =
     ExceptionHandler {
       case e: ResourceNotFoundException => logException(NotFound, e.message, "NotFound Exception")
+      case e: BadRequestException => logException(BadRequest, e.message, "BadRequest Exception")
       case e: UnauthorizedUserException =>
         logException(Unauthorized, e.message, "Unauthorized Exception")
       case e: TokenExpiredException =>
