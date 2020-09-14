@@ -2,15 +2,15 @@ package com.la.receta
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.HttpMethods.{DELETE, GET, OPTIONS, POST, PUT}
+import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.server.Directives.{handleExceptions, handleRejections}
 import akka.http.scaladsl.server.Route
-import akka.stream.{Materializer}
+import akka.stream.Materializer
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 import ch.megard.akka.http.cors.scaladsl.model.{HttpHeaderRange, HttpOriginMatcher}
 import ch.megard.akka.http.cors.scaladsl.settings.CorsSettings
-import com.la.receta.config.http.RouteHandler
-import com.la.receta.config.{ApplicationConfiguration, ApplicationLogger, RouteConfig}
+import com.la.receta.config.http.{JWTConfigImpl, RouteHandler}
+import com.la.receta.config.{ApplicationConfiguration, Logger}
 import com.la.receta.controller.UserController
 import com.la.receta.controller.v1.UserControllerImpl
 import com.la.receta.database.{Connector, RecetaDao}
@@ -24,11 +24,14 @@ object ServiceMain
     extends PlayJsonSupport
     with App
     with RouteHandler
-    with ApplicationLogger
+    with Logger
     with ApplicationConfiguration {
+
   implicit val system: ActorSystem = ActorSystem("my-system")
   implicit val materializer: Materializer = Materializer(system)
   implicit val executionContext: ExecutionContext = system.dispatcher
+
+  implicit val config: JWTConfigImpl = new JWTConfigImpl
 
   lazy val recetaDao = {
     val db = Connector.session.db
@@ -56,7 +59,8 @@ object ServiceMain
         "x-refresh-token",
         "Origin",
         "Authorization",
-        "X-Requested-With"
+        "X-Requested-With",
+        "Set_Cookie"
       )
     )
 

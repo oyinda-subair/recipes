@@ -9,6 +9,8 @@ trait ApplicationConfiguration {
   val dbUsername: String = sys.env.getOrElse("MYSQL_USERNAME", "")
   val dbPassword: String = sys.env.getOrElse("MYSQL_PASSWORD", "")
 
+  val secret: String = sys.env.getOrElse("SECRET", "")
+
   private val app = config.getConfig("app")
 
   val httpInterface: String = app.getString("host")

@@ -15,6 +15,7 @@ env:
   MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
   MYSQL_HOST: localhost
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  SECRET: ${{secrets.SECRET}}
 jobs:
   tests:
     runs-on: ubuntu-latest
