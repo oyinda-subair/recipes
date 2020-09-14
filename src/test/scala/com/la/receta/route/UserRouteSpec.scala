@@ -58,7 +58,7 @@ class UserRouteSpec
 
     "User Profile" in {
       val request = LoginRequestMessage(string10, string10)
-      val response = Future.successful(DataResponseWrapper(MemberResponse(userId, s"name $string10", s"user-$string10", s"$string10@email.com")))
+      val response = Future.successful(DataResponseWrapper(MemberResponse(userId, s"name $string10", s"user-$string10", Some(s"$string10@email.com"))))
 
       when(userController.getUserById(userId)).thenReturn(response)
 
