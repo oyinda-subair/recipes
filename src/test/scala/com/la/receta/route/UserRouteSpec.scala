@@ -62,7 +62,7 @@ class UserRouteSpec
 
       when(userController.getUserById(userId)).thenReturn(response)
 
-      Get(s"/$service/$version/profile") ~> routes ~> check {
+      Get(s"/$service/$version/profile").withHeaders(header) ~> routes ~> check {
         status shouldEqual StatusCodes.OK
       }
 

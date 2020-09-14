@@ -2,9 +2,8 @@ package com.la.receta.testkit
 
 import java.util.UUID
 
+import akka.http.javadsl.model.headers.Authorization
 import akka.http.scaladsl.model.{HttpEntity, MediaTypes}
-import akka.http.scaladsl.model.HttpMethods._
-import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Directive1
 import com.la.receta.config.base.Type.UserId
@@ -33,7 +32,7 @@ trait RecetaRouteTestkit {
 
   def generateToken(memberId: UserId) = {
     val userToken = UserToken.generate(memberId)
-    val header = RawHeader("Authorization", userToken.token)
+    val header = Authorization.oauth2(userToken.token)
     (userToken, header)
   }
 }
