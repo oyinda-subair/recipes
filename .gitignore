@@ -37,6 +37,6 @@ project/plugins/project/
 .sc
 /bin/
 
-codecov.yml
+#codecov.yml
 /**/**/*.sc
 **/**/.DS_Store

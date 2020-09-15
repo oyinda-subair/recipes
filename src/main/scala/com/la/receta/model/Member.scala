@@ -1,4 +1,4 @@
-package com.la.receta.entities
+package com.la.receta.model
 
 import java.util.UUID
 

@@ -1,8 +1,11 @@
 package com.la.receta.config.base
 
 import java.security.MessageDigest
+
 import scala.math.BigInt
 import org.mindrot.jbcrypt.BCrypt
+
+import scala.util.Random
 
 object Util {
   def md5HashString(s: String): String = {
@@ -14,6 +17,10 @@ object Util {
   }
 
   def hashString(password: String): String = BCrypt.hashpw(password, BCrypt.gensalt())
+
+  private val random = new Random(System.currentTimeMillis)
+
+  def string10 = new String(Array.fill(10)((random.nextInt(26) + 65).toByte))
 
   /*
   public static boolean matching(String orig, String compare){

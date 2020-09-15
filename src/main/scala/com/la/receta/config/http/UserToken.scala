@@ -27,7 +27,7 @@ object UserToken extends Logger with ApplicationConfiguration {
       Jwt.encode(setClaims(claim), secret, JwtAlgorithm.HS256)
     } catch {
       case e: Exception =>
-        log.error("Error encoding token")
+        log.error(s"Error encoding token: $e")
         throw TokenEncodeException("Encoding token failed!")
     }
 

@@ -27,8 +27,8 @@ class SchemaMigration(implicit val db: JdbcProfile#Backend#Database) extends Log
 
     flyway.dataSource(ds)
     flyway.locations(dir: _*)
-//    flyway.baselineOnMigrate(baseline)
-//    flyway.schemas(schema)
+    flyway.baselineOnMigrate(baseline)
+    flyway.schemas(schema)
 
     try {
       log.info("Conducting database schema migrations if needed.")
