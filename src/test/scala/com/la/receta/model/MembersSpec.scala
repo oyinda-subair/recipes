@@ -1,6 +1,5 @@
 package com.la.receta.model
 
-import com.la.receta.database.{Connector, SchemaMigration}
 import com.la.receta.entities.{CreateMemberRequest, Member}
 import com.la.receta.testkit.RecetaTestkit
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
