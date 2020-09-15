@@ -1,0 +1,7 @@
+coverage:
+  round: down
+  precision: 2
+ignore:
+  - "src/main/scala/com/la/receta/config"
+  - "src/main/scala/com/la/receta/database"
+  - "src/main/scala/com/la/receta/entities"

@@ -4,7 +4,8 @@ import java.util.UUID
 
 import akka.http.javadsl.model.headers.Authorization
 import com.la.receta.config.http.UserToken
-import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, Member, MemberResponse}
+import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, MemberResponse}
+import com.la.receta.model.Member
 import com.la.receta.testkit.RecetaTestkit
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers

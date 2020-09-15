@@ -6,9 +6,10 @@ import com.la.receta.config.base.Util._
 import com.la.receta.config.{DataResponseWrapper, Logger}
 import com.la.receta.controller.UserController
 import com.la.receta.database.RecetaDao
-import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, Member, MemberResponse}
+import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, MemberResponse}
 import com.la.receta.config.errorhandler.{BadRequestException, ResourceNotFoundException, UnauthorizedUserException}
 import com.la.receta.config.http.UserToken
+import com.la.receta.model.Member
 
 import scala.concurrent.{ExecutionContext, Future}
 

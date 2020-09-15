@@ -1,7 +1,6 @@
 package com.la.receta.model
 
 import com.la.receta.database.Connector._
-import com.la.receta.entities.Member
 import org.joda.time.DateTime
 import slick.jdbc.JdbcProfile
 import session.profile.api._

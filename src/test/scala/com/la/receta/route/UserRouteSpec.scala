@@ -6,7 +6,7 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.la.receta.config.DataResponseWrapper
 import com.la.receta.config.http.UserToken
 import com.la.receta.controller.UserController
-import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, Member, MemberResponse}
+import com.la.receta.entities.{CreateMemberRequest, LoginRequestMessage, MemberResponse}
 import com.la.receta.testkit.{RecetaRouteTestkit, RecetaTestkit}
 import org.mockito.{Mockito, MockitoSugar}
 import org.scalatest.matchers.should.Matchers
